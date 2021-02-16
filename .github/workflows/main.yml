@@ -2,7 +2,7 @@ name: CI to Docker Hub
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
 
@@ -31,7 +31,7 @@ jobs:
           file: ./Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           push: true
-          tags: creed93/node-sample-api:latest
+          tags: creed93/simplewhale:latest
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
