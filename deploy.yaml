@@ -1,3 +1,4 @@
+# Deploy API 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,7 +16,9 @@ spec:
     spec:
       containers:
       - name: sample-api-container 
-        image: creed93/node-sample-api:1.0
+        image: creed93/node-sample-api:2.0
+      imagePullSecrets:
+      - name: regcred
 ---
 apiVersion: v1
 kind: Service
@@ -30,5 +33,40 @@ spec:
   - port: 8000
     targetPort: 8000
     nodePort: 30002
+---
+# Deploy Web App 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-demo 
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:  
+      sample-web-app: webapp
+  template:
+    metadata:
+      labels:
+        sample-web-app: webapp
+    spec:
+      containers:
+      - name: sample-web-app
+        image: sample-web-app:1.0
+---        
+apiVersion: v1 
+kind: Service 
+metadata:
+  name: web-app-entrypoint
+  namespace: default
+spec:
+  type: NodePort
+  selector:
+    sample-web-app: webapp
+  ports:
+  - port: 8080
+    targetPort: 8080
+    nodePort: 30003
+
     
 
