@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: node-sample-api-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  tls:
+  - hosts:
+    - prototype.api.stelita.app
+    secretName: prototype-api-tls
+  rules:
+  - host: prototype.api.stelita.app
+    http:
+      paths:
+      - backend:
+          serviceName: node-sample-api
+          servicePort: 8000
